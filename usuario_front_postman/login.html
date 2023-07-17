@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("#but_submit").click(function(e){
+	e.preventDefault();
+        var username = $("#login").val().trim();
+        var password = $("#password").val().trim();
+
+        if( username != "" && password != "" ){
+    
+            $.ajax({
+                url: "http://localhost:8080/usuario/login",
+				type: "POST",
+				
+				headers: { 'Access-Control-Allow-Origin': '*',
+                            'Content-Type': 'application/json'},
+				
+                data: JSON.stringify({"login": username, "password": password})
+				, // serializes the form's elements.
+                success: function (data) {
+				if(data.mensaje == 'success'){
+				    window.location.href = "menu.html";
+				} else {
+                    $('#message').text(data.error);
+			    }
+                },
+                error: function (err) {
+                    console.log(error);
+                }
+            });
+			
+
+        }
+    });
+});
+</script>
+<body>
+
+<div class="container">
+
+    <div id="div_login">
+        <h1>Login</h1>
+        <div id="message"></div>
+        <div>
+            <input type="text" class="textbox" id="login" name="login" placeholder="Username" />
+        </div>
+        <div>
+            <input type="password" class="textbox" id="password" name="password" placeholder="Password"/>
+        </div>
+        <div>
+            <input type="button" value="Submit" name="but_submit" id="but_submit" />
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
